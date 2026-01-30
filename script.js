@@ -15,6 +15,11 @@ const linksContainer = document.querySelector('.nav__links');
 
 // Hover
 const links = document.querySelectorAll('.nav__link');
+
+//Header
+const header = document.querySelector('.header');
+const nav = document.querySelector('.nav');
+const navHeight = nav.getBoundingClientRect().height;
 ///////////////////////////////////////
 // Modal window
 const showModal = function () {
@@ -71,3 +76,20 @@ links.forEach(link => {
     });
   });
 });
+
+///////////////////////////////////////
+// Sticky nav
+const headerFunc = function (entries) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObj = new IntersectionObserver(headerFunc, {
+  root: null,
+  threshold: 0,
+  rootMargin: `${-navHeight}px`,
+});
+
+headerObj.observe(header);
