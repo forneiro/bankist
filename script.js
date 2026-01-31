@@ -16,10 +16,14 @@ const linksContainer = document.querySelector('.nav__links');
 // Hover
 const links = document.querySelectorAll('.nav__link');
 
-//Header
+// Header
 const header = document.querySelector('.header');
 const nav = document.querySelector('.nav');
 const navHeight = nav.getBoundingClientRect().height;
+
+// Images
+const images = document.querySelectorAll('.features__img');
+
 ///////////////////////////////////////
 // Modal window
 const showModal = function () {
@@ -79,17 +83,41 @@ links.forEach(link => {
 
 ///////////////////////////////////////
 // Sticky nav
-const headerFunc = function (entries) {
+const headerFn = function (entries) {
   const [entry] = entries;
 
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
 };
 
-const headerObj = new IntersectionObserver(headerFunc, {
+const headerObj = new IntersectionObserver(headerFn, {
   root: null,
   threshold: 0,
   rootMargin: `${-navHeight}px`,
 });
 
 headerObj.observe(header);
+
+///////////////////////////////////////
+// Change images
+const imagesFn = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (entry.isIntersecting) {
+    entry.target.src = entry.target.getAttribute('data-src');
+    entry.target.addEventListener('load', function () {
+      entry.target.classList.remove('lazy-img');
+      imagesObj.unobserve(entry.target);
+    });
+  }
+};
+
+const imagesObj = new IntersectionObserver(imagesFn, {
+  root: null,
+  threshold: 0.7,
+});
+
+images.forEach(img => {
+  imagesObj.observe(img);
+});
