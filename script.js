@@ -24,6 +24,10 @@ const navHeight = nav.getBoundingClientRect().height;
 // Images
 const images = document.querySelectorAll('.features__img');
 
+// Operations tab
+const operationsTab = document.querySelectorAll('.operations__tab');
+const operationsContent = document.querySelectorAll('.operations__content');
+
 ///////////////////////////////////////
 // Modal window
 const showModal = function () {
@@ -120,4 +124,23 @@ const imagesObj = new IntersectionObserver(imagesFn, {
 
 images.forEach(img => {
   imagesObj.observe(img);
+});
+
+///////////////////////////////////////
+// Change images
+operationsTab.forEach(operation => {
+  operation.addEventListener('click', function () {
+    const data = operation.dataset.tab;
+    const el = document.querySelector(`.operations__content--${data}`);
+
+    operationsTab.forEach(operation => {
+      operation.classList.remove('operations__tab--active');
+    });
+    operation.classList.add('operations__tab--active');
+
+    operationsContent.forEach(content => {
+      content.classList.remove('operations__content--active');
+    });
+    el.classList.add('operations__content--active');
+  });
 });
